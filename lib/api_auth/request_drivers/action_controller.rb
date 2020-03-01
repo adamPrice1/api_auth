@@ -65,7 +65,7 @@ module ApiAuth
       end
 
       def timestamp
-        find_header(%w[DATE HTTP_DATE])
+        find_header(%w[DATE HTTP_DATE TIMESTAMP HTTP_TIMESTAMP])
       end
 
       def authorization_header

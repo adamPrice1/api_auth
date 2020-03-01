@@ -30,6 +30,7 @@ module ApiAuth
     # Determines if the request is authentic given the request and the client's
     # secret key. Returns true if the request is authentic and false otherwise.
     def authentic?(request, secret_key, options = {})
+
       return false if secret_key.nil?
 
       options = { override_http_method: nil }.merge(options)
@@ -38,6 +39,8 @@ module ApiAuth
 
       # 900 seconds is 15 minutes
       clock_skew = options.fetch(:clock_skew, 900)
+
+
 
       if headers.md5_mismatch?
         false
@@ -84,6 +87,7 @@ module ApiAuth
       match_data = parse_auth_header(headers.authorization_header)
       return false unless match_data
 
+
       digest = match_data[1].nil? ? 'SHA1' : match_data[1].upcase
       raise InvalidRequestDigest if !options[:digest].nil? && !options[:digest].casecmp(digest).zero?
 
@@ -91,7 +95,6 @@ module ApiAuth
 
       header_sig = match_data[3]
       calculated_sig = hmac_signature(headers, secret_key, options)
-
       secure_equals?(header_sig, calculated_sig, secret_key)
     end
 
